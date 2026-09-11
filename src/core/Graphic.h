@@ -1,5 +1,9 @@
 #pragma once
 
+// Graphic.h nomme ID3D11ShaderResourceView : il doit inclure d3d11.h
+// lui-meme. CommonLibSSE-NG 7.x ne le fournit plus transitivement.
+#include <d3d11.h>
+
 namespace Modex
 {
 	// D3D11 Implementation Sourced from dTry's Wheeler and Llama's Tiny Hud. Adapted to NG.
