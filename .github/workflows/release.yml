@@ -97,7 +97,7 @@ jobs:
         if: steps.bump.outputs.bump != 'skip'
         uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Configure (releasedbg, Skyrim VR = n)
+      - name: Configure (releasedbg, Skyrim VR = y)
         if: steps.bump.outputs.bump != 'skip'
         shell: bash
         run: |
@@ -105,7 +105,7 @@ jobs:
           # Ensure clang-cl is on PATH
           clang-cl --version
 
-          xmake f -p windows -a x64 -m releasedbg --skyrim_vr=n -y
+          xmake f -p windows -a x64 -m releasedbg --skyrim_vr=y -y
 
       - name: Build
         if: steps.bump.outputs.bump != 'skip'
