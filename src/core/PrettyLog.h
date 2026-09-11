@@ -170,8 +170,12 @@ namespace Modex::PrettyLog
 }
 
 #ifndef _NDEBUG 
+// __VA_OPT__ supprime la virgule quand aucun argument variadique n'est passe.
+// Sans lui, ASSERT_MSG(cond, "texte") laisse une virgule orpheline avant la
+// parenthese : tolere par l'ancien preprocesseur de MSVC, refuse par le
+// preprocesseur conforme (C2059).
 #	define ASSERT_MSG(condition, msg, ...)          \
-    PrettyLog::Assert(condition, msg, __VA_ARGS__)
+    PrettyLog::Assert(condition, msg __VA_OPT__(,) __VA_ARGS__)
 #else
 #define ASSERT_MSG(condition, msg, ...) \
 	if (auto _assert_msg = PrettyLog::Assert((condition), (msg), __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__); !_assert_msg.empty()) { \
