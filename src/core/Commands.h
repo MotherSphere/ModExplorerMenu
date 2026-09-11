@@ -586,8 +586,7 @@ namespace Modex::Commands
 				return UINotification::ShowError("Failed to cast to Book Object");
 
 			RE::NiPoint3 defaultPos{};
-			RE::BSString buf;
-			book->GetDescription(buf, nullptr);
+			RE::NiMatrix3 defaultRot{};
 
 			RE::TESBoundObject* equipObject = nullptr;
 			RE::ExtraDataList* extraData = nullptr;
@@ -596,9 +595,11 @@ namespace Modex::Commands
 			if (found == 0)
 				return UINotification::ShowError("Unable to locate distributed Book in Inventory");
 
-			// bookRef is the world-placed instance; nullptr for an inventory book read.
-			RE::TESObjectREFR* bookRef = equipObject->As<RE::TESObjectREFR>();
-			RE::BookMenu::OpenBookMenu(buf, extraData, bookRef, book, defaultPos, defaultPos, 1.0f, true);
+			// OpenBookMenu est devenu OpenMenu_Impl, prive, dans CommonLibSSE-NG 7.x ;
+			// seule sa declaration est restee dans l'en-tete. OpenMenuFromBaseForm est
+			// l'API publique equivalente : elle recupere la description elle-meme et
+			// passe une reference nulle, ce qui est le cas d'une lecture en inventaire.
+			RE::BookMenu::OpenMenuFromBaseForm(book, extraData, defaultPos, defaultRot, 1.0f, true);
 
 			return true;
 		});
