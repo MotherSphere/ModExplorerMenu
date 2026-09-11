@@ -101,8 +101,8 @@ namespace Modex
 
 		if (const auto& inputMgr = RE::BSInputDeviceManager::GetSingleton()) {
 			if (const auto& device = inputMgr->GetKeyboard()) {
-				device->Reset();
-				device->Process(0);
+				device->ClearInputState();
+				device->Poll(0.0f);
 			}
 		}
 
@@ -160,7 +160,7 @@ namespace Modex
 	{
 		m_fShow = true;
 
-		RE::ControlMap::GetSingleton()->ToggleControls(kGameplayControls, false);
+		RE::ControlMap::GetSingleton()->ToggleControls(kGameplayControls, false, true);
 		UIManager::GetSingleton()->OnShow();
 		Item3DPreview::GetSingleton()->Begin();
 	}
@@ -170,7 +170,7 @@ namespace Modex
 		m_fShow = false;
 
 		Item3DPreview::GetSingleton()->End();
-		RE::ControlMap::GetSingleton()->ToggleControls(kGameplayControls, true);
+		RE::ControlMap::GetSingleton()->ToggleControls(kGameplayControls, true, true);
 		UIManager::GetSingleton()->OnClose();
 	}
 
