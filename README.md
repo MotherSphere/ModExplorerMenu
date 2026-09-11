@@ -1,3 +1,61 @@
+> ## Fork: rebuild for Skyrim 1.7.104
+>
+> This is a **compatibility fork** of [patchulidev/ModExplorerMenu](https://github.com/patchulidev/ModExplorerMenu).
+> No feature was added, removed or changed — only what was needed to build and run on the
+> current Skyrim AE runtime.
+>
+> Upstream Modex 3.0.1 was built against a CommonLibSSE-NG revision older than Skyrim
+> **1.7.104**. On that runtime the plugin cannot find its address library and refuses to load:
+>
+> ```
+> REL/ID.h(223): failed to open address library file
+> ```
+>
+> This fork rebuilds it against **CommonLibSSE-NG 7.5.2** (`c7662fc`), with the porting fixes
+> that version requires.
+>
+> ### Porting fixes
+>
+> | # | File | Fix |
+> |---|------|-----|
+> | 1 | `src/core/PrettyLog.h` | `ASSERT_MSG` left a trailing comma when expanded with no variadic argument. `__VA_OPT__(,)` removes it. |
+> | 2 | `src/data/BaseObject.h` | Slot masks are `REX::EnumSet` in NG 7.x — `static_cast<int>` replaced by `.underlying()`. |
+> | 3 | `src/core/Graphic.h` | NG 7.x no longer pulls in `<d3d11.h>` transitively; included explicitly. |
+> | 4 | `src/ui/core/UIMenuImpl.cpp` | `BSInputDeviceManager::Reset`/`Process` renamed to `ClearInputState`/`Poll`. |
+> | 5 | `src/ui/core/UIMenuImpl.cpp`, `src/ui/modules/settings/SettingsModule.cpp` | `ToggleControls` takes an extra argument — updated at all 13 call sites. |
+> | 6 | `src/core/Commands.h` | `BookMenu::OpenBookMenu` is now private; replaced with the public `OpenMenuFromBaseForm`. |
+> | 7 | `src/core/Hooks.cpp` | **Runtime fix.** A single trampoline allocation sized for all four hooks. |
+>
+> Fix 7 is the one that kept the plugin from booting even once it compiled. `SKSE::AllocTrampoline`
+> **sets** `info.trampolineSize` instead of accumulating it, and `API::InitTrampoline` is guarded by
+> a `std::call_once` — so only the *first* call ever creates the buffer. The four sequential calls
+> (14, 8, 14, 14) therefore reserved 14 bytes in total. The first `write_call<5>` consumed all of
+> them and the next hook died in `do_allocate`:
+>
+> ```
+> SKSE/Trampoline.cpp(164): Failed to handle allocation request
+> ```
+>
+> ### Build
+>
+> Same as upstream, except `--skyrim_vr=y` — the prebuilt NG package this fork resolves is built
+> with VR support on, and the flags must match:
+>
+> ```bat
+> xmake config -m releasedbg --skyrim_vr=y
+> xmake build
+> ```
+>
+> ### Licence
+>
+> Modex is © Patchuli, released under the **GNU General Public License v3.0**. This fork keeps that
+> licence; the full corresponding source of any binary built from it is this repository.
+>
+> Original mod: [Nexus 137877](https://www.nexusmods.com/skyrimspecialedition/mods/137877) ·
+> [patchulidev/ModExplorerMenu](https://github.com/patchulidev/ModExplorerMenu)
+
+---
+
 ![](https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=Modex&desc=A%20Mod%20Explorer%20Menu&descSize=20&section=header)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/patchulidev/modexplorermenu?style=for-the-badge) ![GitHub License](https://img.shields.io/github/license/patchulidev/modexplorermenu?style=for-the-badge) ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/patchulidev/modexplorermenu?style=for-the-badge) ![GitHub Release](https://img.shields.io/github/v/release/patchulidev/modexplorermenu?include_prereleases&display_name=release&style=for-the-badge) ![Static Badge](https://img.shields.io/badge/nexus-page-gray?style=for-the-badge&labelColor=orange&link=https%3A%2F%2Fwww.nexusmods.com%2Fskyrimspecialedition%2Fmods%2F137877)
