@@ -166,12 +166,12 @@ jobs:
           files: |
             ${{ steps.distzip.outputs.asset_name }}
 
-        # Sur declenchement manuel, la publication est sautee : on recupere
-        # quand meme le build via un artefact telechargeable.
-        - name: Upload build artifact
-          if: steps.bump.outputs.bump != 'skip'
-          uses: actions/upload-artifact@v4
-          with:
-            name: Modex-${{ steps.version.outputs.next }}
-            path: package/
-            if-no-files-found: error
+      # Sur declenchement manuel, la publication est sautee : on recupere
+      # quand meme le build via un artefact telechargeable.
+      - name: Upload build artifact
+        if: steps.bump.outputs.bump != 'skip'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Modex-${{ steps.version.outputs.next }}
+          path: package/
+          if-no-files-found: error
