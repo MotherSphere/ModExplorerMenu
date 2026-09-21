@@ -1,3 +1,12 @@
+Modex distribution license: GNU General Public License v3.0 (see LICENSE.txt).
+
+The upstream notice below is preserved for attribution and its license conditions.
+It does not offer the combined Modex/CommonLibSSE-NG distribution under MIT.
+Dependency-specific notices remain applicable to their respective components.
+
+Upstream Modex notice
+====================
+
 MIT License
 
 Copyright (c) 2026 Patchuli

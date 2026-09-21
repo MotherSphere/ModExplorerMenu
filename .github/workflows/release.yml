@@ -125,6 +125,7 @@ jobs:
 
           test -d dist
           cp -a dist/. package/
+          cp LICENSE.txt NOTICE.txt package/
 
           mkdir -p package/SKSE/Plugins
 

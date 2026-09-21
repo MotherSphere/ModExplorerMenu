@@ -49,7 +49,10 @@
 > ### Licence
 >
 > Modex is © Patchuli, released under the **GNU General Public License v3.0**. This fork keeps that
-> licence; the full corresponding source of any binary built from it is this repository.
+> licence; see [LICENSE.txt](LICENSE.txt) for the complete GPL-3.0 text.
+> The upstream MIT copyright and permission notice is retained in [NOTICE.txt](NOTICE.txt),
+> not as an alternative license for the combined distribution. Dependency licenses remain
+> applicable to their respective components. Source code for this fork is available here.
 >
 > Original mod: [Nexus 137877](https://www.nexusmods.com/skyrimspecialedition/mods/137877) ·
 > [patchulidev/ModExplorerMenu](https://github.com/patchulidev/ModExplorerMenu)
